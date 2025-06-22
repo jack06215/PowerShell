@@ -132,9 +132,11 @@ function Install-ChocolateyAppsMenu {
 
         switch ($choice) {
             '1' {
+                choco feature enable -n allowGlobalConfirmation
                 choco install "$currentPath\defaultapps.config"
             }
             '2' {
+                choco feature enable -n allowGlobalConfirmation
                 choco install "$currentPath\defaultapps.config"
                 choco install "$currentPath\devapps.config"
             }
