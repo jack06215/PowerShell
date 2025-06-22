@@ -65,3 +65,4 @@ This repository contains my PowerShell profile to enhance command-line experienc
 - Windows PowerShell 5+ or PowerShell Core.
 - [Chocolatey](https://chocolatey.org/) for package management.
 - Internet access for downloading fonts and updates.
+- ` Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned`
