@@ -126,25 +126,33 @@ function Install-ChocolateyAppsMenu {
         Write-Host ""
     }
 
+    function Disable-ChecksumFlag {
+        choco feature enable -n=allowEmptyChecksums
+        choco feature enable -n=allowEmptyChecksumsSecure
+    }
+
     while ($true) {
         Show-Menu
         $choice = Read-Host "Type 1, 2, 3, 4 or 5 then press ENTER"
 
         switch ($choice) {
             '1' {
+                Disable-ChecksumFlag
                 choco feature enable -n allowGlobalConfirmation
-                choco install "$currentPath\defaultapps.config"
+                choco install "$currentPath\defaultapps.config" --ignore-checksums -y
             }
             '2' {
+                Disable-ChecksumFlag
                 choco feature enable -n allowGlobalConfirmation
-                choco install "$currentPath\defaultapps.config"
-                choco install "$currentPath\devapps.config"
+                choco install "$currentPath\defaultapps.config" --ignore-checksums -y
+                choco install "$currentPath\devapps.config" --ignore-checksums -y
             }
             '3' {
                 Write-Host "Installing Chocolatey..."
                 Install-Chocolatey
+                Disable-ChecksumFlag
                 choco feature enable -n allowGlobalConfirmation
-                choco upgrade chocolatey
+                choco upgrade chocolatey --ignore-checksums -y
                 Write-Host "..............................................."
                 Write-Host "A RESTART OF THE SCRIPT MAY BE NECESSARY!!"
                 Write-Host "..............................................."
