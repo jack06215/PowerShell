@@ -1,6 +1,6 @@
 # PowerShell Profile
 
-This repository contains my PowerShell profile to enhance command-line experience on Windows. The profile script (`Microsoft.PowerShell_profile.ps1`) provides a set of utility functions, aliases, and startup configurations for productivity, development, and system management.
+This repository contains my PowerShell profile to enhance command-line experience on Windows. The profile script (`Microsoft.PowerShell_profile.ps1`) provides a set of utility functions for productivity.
 
 ## Features
 
