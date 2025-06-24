@@ -221,6 +221,15 @@ function Clear-Cache {
     Write-Host "Cache clearing completed." -ForegroundColor Green
 }
 
+function Clean-Downloads {
+    param([int]$Days = 30)
+    $cutoff = (Get-Date).AddDays(-$Days)
+    Get-ChildItem "$env:USERPROFILE\Downloads" -Recurse |
+    Where-Object { !$_.PsIsContainer -and $_.LastWriteTime -lt $cutoff } |
+    Remove-Item -Force
+}
+
+
 # Set Default Editor
 $editors = @('nvim', 'vim', 'code', 'notepad++', 'notepad')
 
