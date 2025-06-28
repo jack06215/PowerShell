@@ -55,19 +55,52 @@ function Get-URLFileToTemp {
         [string]$Url,
         [string]$DestinationPath
     )
-    try {
-        $webClient = New-Object System.Net.WebClient
-        $webClient.DownloadFileAsync((New-Object System.Uri($Url)), $DestinationPath)
 
-        while ($webClient.IsBusy) {
-            Start-Sleep -Seconds 2
+    try {
+        # Create HTTP client
+        $httpClient = [System.Net.Http.HttpClient]::new()
+        $response = $httpClient.SendAsync(
+            [System.Net.Http.HttpRequestMessage]::new([System.Net.Http.HttpMethod]::Get, $Url),
+            [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead
+        ).Result
+
+        if (-not $response.IsSuccessStatusCode) {
+            throw "HTTP Error $($response.StatusCode): $($response.ReasonPhrase)"
         }
-        Write-Host "Downloaded file to $DestinationPath"
+
+        $totalBytes = $response.Content.Headers.ContentLength
+        $inputStream = $response.Content.ReadAsStream()
+        $outputStream = [System.IO.File]::OpenWrite($DestinationPath)
+
+        $buffer = New-Object byte[] 8192
+        $bytesRead = 0
+        $totalRead = 0
+        $percentComplete = 0
+
+        do {
+            $bytesRead = $inputStream.Read($buffer, 0, $buffer.Length)
+            $outputStream.Write($buffer, 0, $bytesRead)
+            $totalRead += $bytesRead
+
+            if ($totalBytes -gt 0) {
+                $percentComplete = [int](($totalRead / $totalBytes) * 100)
+                Write-Progress -Activity "Downloading File" -Status "$percentComplete% Complete" -PercentComplete $percentComplete
+            }
+        } while ($bytesRead -gt 0)
+
+        $inputStream.Dispose()
+        $outputStream.Dispose()
+        $httpClient.Dispose()
+
+        Write-Host "✅ Download complete: $DestinationPath"
     }
     catch {
-        Write-Error "Failed to download file from $Url. Error: $_"
+        Write-Error "❌ Failed to download file from $Url"
+        Write-Error $_
     }
 }
+
+
 
 function Install-WinGW {
     param (
