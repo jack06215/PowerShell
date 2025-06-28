@@ -169,11 +169,11 @@ function Install-Chocolatey {
     }
 }
 
-function Install-ChocolateyAppsMenu {
+function Open-InstallationMenu {
     Clear-Host
     $currentPath = Split-Path -Parent $PROFILE.CurrentUserAllHosts
-    Write-Host "Install Chocolatey Apps Menu"
-    Write-Host "This script will help you install or upgrade apps using Chocolatey."
+    Write-Host "Installation Menu"
+    Write-Host "This installer menu helps you install all essential packages."
     Write-Host ""
 
     function Show-Menu {
