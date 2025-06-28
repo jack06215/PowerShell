@@ -76,7 +76,8 @@ function Install-WinGW {
         [string]$Revision = "r2"
     )
     try {
-        if (1) {
+        if (-not (Test-CommandExists gcc)) {
+            Write-Host "Installing WinGW GCC ${GccVersion}..."
             $GccZipUrl = "https://github.com/brechtsanders/winlibs_mingw/releases/download/${GccVersion}posix-${MinGWVersion}-ucrt-${Revision}/winlibs-x86_64-posix-seh-gcc-${GccVersion}-mingw-w64ucrt-${MinGWVersion}-${Revision}.zip"
             $zipFilePath = "$env:TEMP\mingw-${MinGWVersion}.zip"
             $extractPath = "$env:TEMP\mingw"
