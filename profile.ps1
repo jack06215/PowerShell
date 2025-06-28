@@ -10,6 +10,9 @@ function goto {
         "jack06215" {
             Set-Location -Path "$HOME/Documents/Mycodespace/jack06215"
         }
+        "nvim" {
+            Set-Location -Path "$HOME/AppData/Local/nvim"
+        }
         default {
             Write-Error "Invalid location"
         }
