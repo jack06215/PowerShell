@@ -50,6 +50,69 @@ function Test-CommandExists {
     return $exists
 }
 
+function Get-URLFileToTemp {
+    param (
+        [string]$Url,
+        [string]$DestinationPath
+    )
+    try {
+        $webClient = New-Object System.Net.WebClient
+        $webClient.DownloadFileAsync((New-Object System.Uri($Url)), $DestinationPath)
+
+        while ($webClient.IsBusy) {
+            Start-Sleep -Seconds 2
+        }
+        Write-Host "Downloaded file to $DestinationPath"
+    }
+    catch {
+        Write-Error "Failed to download file from $Url. Error: $_"
+    }
+}
+
+function Install-WinGW {
+    param (
+        [string]$GccVersion = "15.1.0",
+        [string]$MinGWVersion = "13.0.0",
+        [string]$Revision = "r2"
+    )
+    try {
+        if (1) {
+            $GccZipUrl = "https://github.com/brechtsanders/winlibs_mingw/releases/download/${GccVersion}posix-${MinGWVersion}-ucrt-${Revision}/winlibs-x86_64-posix-seh-gcc-${GccVersion}-mingw-w64ucrt-${MinGWVersion}-${Revision}.zip"
+            $zipFilePath = "$env:TEMP\mingw-${MinGWVersion}.zip"
+            $extractPath = "$env:TEMP\mingw"
+
+            Write-Host "Downloading WinGW GCC ${GccVersion}..."            
+            Get-URLFileToTemp -Url $GccZipUrl -DestinationPath $zipFilePath
+
+            Expand-Archive -Path $zipFilePath -DestinationPath $extractPath -Force
+            $destination = "C:\tools\mingw64"
+            if (-not (Test-Path $destination)) {
+                Write-Host "Creating directory $destination"
+                New-Item -ItemType Directory -Path $destination -Force | Out-Null
+            }
+            Get-ChildItem -Path $extractPath -Recurse | ForEach-Object {
+                $targetPath = Join-Path -Path $destination -ChildPath $_.Name
+                Write-Host "Copying $($_.FullName) to $targetPath"
+                if (-not (Test-Path $targetPath)) {
+                    Copy-Item -Path $_.FullName -Destination $targetPath
+                }
+            }
+            Write-Host "Removing Temporary Files..."
+            Remove-Item -Path $extractPath -Recurse -Force
+            Remove-Item -Path $zipFilePath -Force
+            Write-Host "WinGW GCC ${GccVersion} installed to $destination"
+            Write-Warning "Please add C:\tools\mingw64\bin to your PATH environment variable to use the compiler."
+        }
+        else {
+            Write-Host "C++ Compiler Already Installed."
+        }
+
+    }
+    catch {
+        Write-Error "Failed to download or install WinGW-${WinGWVersion}. Error: $_"
+    }
+}
+
 function Install-NerdFonts {
     param (
         [string]$FontName = "PlemolJP_NF",
