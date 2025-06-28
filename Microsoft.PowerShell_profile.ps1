@@ -455,7 +455,7 @@ function tail {
     Get-Content $Path -Tail $n -Wait:$f
 }
 
-# Install Essentail Packages
+# Install Essential Packages
 function Install-Packages {
     # Chocolatey
     $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
