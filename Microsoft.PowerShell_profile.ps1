@@ -181,11 +181,12 @@ function Install-ChocolateyAppsMenu {
         Write-Host "Select an option to proceed:"
         Write-Host "..............................................."
         Write-Host ""
-        Write-Host "1 - Basic apps"
-        Write-Host "2 - Developer apps"
+        Write-Host "1 - Install Default apps"
+        Write-Host "2 - Install Developer apps"
         Write-Host "3 - Install Chocolatey"
-        Write-Host "4 - Upgrade apps"
-        Write-Host "5 - EXIT"
+        Write-Host "4 - Upgrade all apps via Chocolatey"
+        Write-Host "5 - Install WinGW GCC"
+        Write-Host "q - EXIT"
         Write-Host ""
     }
 
@@ -224,6 +225,9 @@ function Install-ChocolateyAppsMenu {
                 choco upgrade all
             }
             '5' {
+                Install-WinGW -GccVersion "15.1.0" -MinGWVersion "13.0.0" -Revision "r2"
+            }   
+            'q' {
                 Write-Host "Exiting..."
                 return
             }
