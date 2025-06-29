@@ -13,6 +13,10 @@ function goto {
         "nvim" {
             Set-Location -Path "$HOME/AppData/Local/nvim"
         }
+        "powershell" {
+            $location = Split-Path -Parent $PROFILE.CurrentUserAllHosts
+            Set-Location -Path $location
+        }
         default {
             Write-Error "Invalid location"
         }

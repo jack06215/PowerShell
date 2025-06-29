@@ -112,25 +112,29 @@ function Install-WinGW {
         if (-not (Test-CommandExists gcc)) {
             Write-Host "Installing WinGW GCC ${GccVersion}..."
             $GccZipUrl = "https://github.com/brechtsanders/winlibs_mingw/releases/download/${GccVersion}posix-${MinGWVersion}-ucrt-${Revision}/winlibs-x86_64-posix-seh-gcc-${GccVersion}-mingw-w64ucrt-${MinGWVersion}-${Revision}.zip"
-            $zipFilePath = "$env:TEMP\mingw-${MinGWVersion}.zip"
-            $extractPath = "$env:TEMP\mingw"
+            $zipFilePath = "$env:TEMP/mingw-${MinGWVersion}.zip"
+            $extractPath = "$env:TEMP/mingw"    
 
             Write-Host "Downloading WinGW GCC ${GccVersion}..."            
             Get-URLFileToTemp -Url $GccZipUrl -DestinationPath $zipFilePath
 
             Expand-Archive -Path $zipFilePath -DestinationPath $extractPath -Force
-            $destination = "C:\tools\mingw64"
+            $destination = "C:/tools"
             if (-not (Test-Path $destination)) {
                 Write-Host "Creating directory $destination"
                 New-Item -ItemType Directory -Path $destination -Force | Out-Null
             }
-            Get-ChildItem -Path $extractPath -Recurse | ForEach-Object {
-                $targetPath = Join-Path -Path $destination -ChildPath $_.Name
-                Write-Host "Copying $($_.FullName) to $targetPath"
-                if (-not (Test-Path $targetPath)) {
-                    Copy-Item -Path $_.FullName -Destination $targetPath
+            Get-ChildItem -Path $extractPath -Recurse -File | ForEach-Object {
+                $relativePath = $_.FullName.Substring($extractPath.Length).TrimStart('\')
+                $targetPath = Join-Path -Path $destination -ChildPath $relativePath
+                $targetDir = Split-Path -Path $targetPath -Parent
+                if (-not (Test-Path $targetDir)) {
+                    New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
                 }
+                Write-Host "Copying file $($_.FullName) to $targetPath"
+                Copy-Item -Path $_.FullName -Destination $targetPath -Force
             }
+
             Write-Host "Removing Temporary Files..."
             Remove-Item -Path $extractPath -Recurse -Force
             Remove-Item -Path $zipFilePath -Force
