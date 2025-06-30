@@ -6,7 +6,7 @@ $GotoPath = @{
     "chezmoi"    = "$HOME/.local/share/chezmoi"
 }
 function goto {
-    param (1
+    param (
         [Parameter(Mandatory = $true)]
         [ValidateSet("monorepo", "jack06215", "nvim", "powershell", "chezmoi")]
         [string]$label
