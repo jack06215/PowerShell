@@ -1,25 +1,19 @@
+$GotoPath = @{
+    "monorepo"   = "$HOME/Documents/Mycodespace/monorepo"
+    "jack06215"  = "$HOME/Documents/Mycodespace/jack06215"
+    "nvim"       = "$HOME/AppData/Local/nvim"
+    "powershell" = (Split-Path -Parent $PROFILE.CurrentUserAllHosts)
+    "chezmoi"    = "$HOME/.local/share/chezmoi"
+}
 function goto {
-    param (
-        $location
+    param (1
+        [Parameter(Mandatory = $true)]
+        [ValidateSet("monorepo", "jack06215", "nvim", "powershell", "chezmoi")]
+        [string]$label
     )
-
-    Switch ($location) {
-        "monorepo" {
-            Set-Location -Path "$HOME/Documents/Mycodespace/monorepo"
-        }
-        "jack06215" {
-            Set-Location -Path "$HOME/Documents/Mycodespace/jack06215"
-        }
-        "nvim" {
-            Set-Location -Path "$HOME/AppData/Local/nvim"
-        }
-        "powershell" {
-            $location = Split-Path -Parent $PROFILE.CurrentUserAllHosts
-            Set-Location -Path $location
-        }
-        default {
-            Write-Error "Invalid location"
-        }
+    if ($GotoPath.ContainsKey($label)) {
+        Write-Host "Navigating to $label at $($GotoPath[$label])" -ForegroundColor Green
+        Set-Location $GotoPath[$label]
     }
 }
 
