@@ -26,6 +26,7 @@ function goto {
 # starship configuration
 $ENV:STARSHIP_CONFIG = "$HOME\.starship\starship.toml"
 Invoke-Expression (&starship init powershell)
+$env:SHELL = "pwsh"
 
 # Set Alias
 Set-Alias g goto
