@@ -512,6 +512,10 @@ function Install-Packages {
         Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck
     }
     Import-Module -Name Terminal-Icons
+    # Burnt Toast
+    if (-not (Get-Module -ListAvailable -Name BurntToast)) {
+        Install-Module -Name BurntToast -Scope CurrentUser -Force -SkipPublisherCheck
+    }
     # Nert Font
     Install-NerdFonts -FontName "PlemolJP_NF" -FontDisplayName "PlemolJP Console NF Medium" -Version "2.0.4"
 }
