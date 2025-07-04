@@ -516,6 +516,10 @@ function Install-Packages {
     if (-not (Get-Module -ListAvailable -Name BurntToast)) {
         Install-Module -Name BurntToast -Scope CurrentUser -Force -SkipPublisherCheck
     }
+    # Wifi Tools
+    if  (-not (Get-Module -ListAvailable -Name WifiTools)) {
+        Install-Module -Name WifiTools -Scope CurrentUser -Force -SkipPublisherCheck
+    }
     # Nert Font
     Install-NerdFonts -FontName "PlemolJP_NF" -FontDisplayName "PlemolJP Console NF Medium" -Version "2.0.4"
 }
