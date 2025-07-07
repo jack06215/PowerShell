@@ -47,5 +47,7 @@ Thumbs.db
 *.swo
 *.lock
 
-Modules/**
+Modules/BurntToast/**
+Modules/Terminal-Icons/**
+Modules/WifiTools/**
 Help/**
