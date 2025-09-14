@@ -50,4 +50,6 @@ Thumbs.db
 Modules/BurntToast/**
 Modules/Terminal-Icons/**
 Modules/WifiTools/**
+Modules/PSFzf/**
+Modules/PowerShellEditorServices/**
 Help/**
