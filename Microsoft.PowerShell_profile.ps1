@@ -543,6 +543,7 @@ $env:SHELL = "pwsh"
 # Set Alias
 Set-Alias g goto
 Set-Alias pbcopy Set-Clipboard
+Set-Alias pbpaste Get-Clipboard
 Set-Alias -Name su -Value admin
 Set-Alias lg lazygit
 
