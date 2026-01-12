@@ -550,10 +550,15 @@ Set-Alias lg lazygit
 if (Get-Module PSReadLine) {
     $vimCommand = Get-Command vim -ErrorAction Ignore
     if ($vimCommand) {
-        if (Get-Module PSFzf) {
-            Write-Warning "PSFzf is already loaded. Setting Vim keybindings will override PSFzf keybinds (like Ctrl+r)."
-        }
+        # if (Get-Module PSFzf) {
+        #     Write-Warning "PSFzf is already loaded. Setting Vim keybindings will override PSFzf keybinds (like Ctrl+r)."
+        # }
         Set-PSReadLineOption -EditMode Vi
+        Set-PsFzfOption `
+        -EnableTabCompletion `
+        -PSReadlineChordReverseHistory 'Ctrl+r' `
+        -PSReadlineChordProvider 'Ctrl+t' `
+        -PSReadlineChordSetLocation 'Alt+c'
         Set-PSReadLineOption -PredictionSource HistoryAndPlugin
         Set-PSReadLineOption -MaximumHistoryCount 10000
         Set-PSReadLineOption -ViModeIndicator Cursor
